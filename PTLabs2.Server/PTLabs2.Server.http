@@ -1,0 +1,6 @@
+@PTLabs2.Server_HostAddress = http://localhost:5160
+
+GET {{PTLabs2.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

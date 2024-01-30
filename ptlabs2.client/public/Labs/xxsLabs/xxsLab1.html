@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var isSolved=false;
+        const originalAlert = window.alert;
+        const originalPrompt = window.prompt;
+        window.alert = function(message) {
+        originalAlert(message);
+        labSolved();
+        }
+
+        window.prompt = function(message) {
+        originalPrompt(message);
+        labSolved();
+        }
+
+        const search = () => {
+
+            var inputValue = document.querySelector('.input-value').value;
+            document.querySelector('.res-div').innerHTML = `You searched for <b>${inputValue}</b>`;
+        }
+
+        const labSolved=()=>{
+            //console.log('lab solved');
+            const token = localStorage.getItem("token");
+            const labName = "XSS1";
+            fetch('users/solveLab', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ labName })
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch((error) => {
+            console.error('Error:', error);
+            });
+        }
+
+        function checkLab(){
+            var token = localStorage.getItem("token");
+            var labName = "XSS1";
+            fetch(`${process.env.BACKEND}/users/solvelab` , {
+                headers:{
+                    'Authorization' : `Bearer ${token}`
+                }
+            })
+            .then(response=>response.json())
+            var labExists = data.labs.some(lab => lab.labName === labName);
+            if (labExists) {
+            document.getElementById('labStatus').innerHTML = "You have already solved this lab.";
+            }
+        }
+
+    </script>
+</head>
+<body onload="checkLab()">
+    <div id="labStatus">
+
+    </div>
+    <h1>XSS Lab 1 </h1>
+    <h2>Reflected XSS</h2>
+    <p>
+        Reflected XXS happens when you can enter data to the website, such as using an input tag, and have what you entered written to the page.<br>
+        For example, try to search for anything using the input below:<br>
+        <input type="text" class="input-value" placeholder="Search" /><br>
+        <button onclick="search()">Search</button><br>
+        <div class="res-div">
+
+        </div>
+    </p>
+    <br>
+    <p>
+        Being a clever Front-End Developer, you know what is going on, the app is QuerySelecting the value on the input and displaying it by setting it as the innerHTML of div tag<br>
+        Althought this might be interesting, it is <b>dangerous</b> because it allows the user to insert HTML tags as a value and let's not forget that the script tag is, well, a tag.
+        A bad intended user would be able to inject a script tag containing malicious Javascript<br>
+        Modern browsers provide a vast layer of protection about common XSS attacks.<br>
+        You might be familiar with injecting a script tag that simply evokes an alert() as a POC that the website is vulnerable to XXS.<br>
+        Although in this page the developer haven't taken any measurements in order to avoid it, this kind of attack is deprecated for such modern broswers but there are still many ways in witch it can be attacked<br>
+        Here is a list of possible payloads to be used in a XXS POC:<br>
+        <br>
+
+        &lt;img src/onerror=prompt(8)&gt;<br>
+        &lt;image src =q onerror=prompt(8)&gt;<br>
+        &lt;image src =q onerror=alert("hacked")&gt;<br>
+        &lt;img src =q onerror=prompt(8)&gt;<br>
+        &lt;script\x09type="text/javascript"&gt;javascript:alert(1);&lt;/script&gt;<br>
+        &lt;script\x0Ctype="text/javascript"&gt;javascript:alert(1);&lt;/script&gt;<br>
+        &lt;svg onLoad svg onLoad="javascript:javascript:alert(1)"&gt;&lt;/svg onLoad&gt;<br>
+        &lt;body onLoad body onLoad="javascript:javascript:alert(1)"&gt;&lt;/body onLoad&gt;<br>
+        &lt;body onPageShow body onPageShow="javascript:javascript:alert(1)"&gt;&lt;/body onPageShow&gt;<br>            &lt;script&gt;javascript:alert(1)&lt;/script\x0D<br>
+        &lt;image/src/onerror=prompt(8)&gt;<br>
+        &lt;img/src/onerror=prompt(8)&gt;<br>
+        &lt;image src/onerror=prompt(8)&gt;<br>
+
+    </p>
+
+    <div>
+        <h3>Exercise </h3>
+        Try to copy and paste any of those payloads into the input tag on the top of this page and see if any of them can execute JavaScript on the browser<br>
+        If you get an alert() or prompt(), it proves that this app is vulnerable to XSS and you solve this lab!<br>
+    </div>
+
+
+
+
+</body>
+</html>
