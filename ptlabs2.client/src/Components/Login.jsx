@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import  { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,8 +7,33 @@ function Login() {
     const [password, setPassword] = useState('');
     const [emailCreate, setEmailCreate] = useState('');
     const [passwordCreate, setPasswordCreate] = useState('');
+    //const [user, setUser] = useState(null);
     const navigate = useNavigate();
     axios.defaults.withCredentials = true;
+
+
+
+    useEffect(() => {
+        const isLoggedIn = async () => {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND}/Users/isLoggedIn`, {
+                    withCredentials: true
+                });
+
+                console.log(response);
+                if (response.data === "isAuthenticated") {
+                    
+                    navigate('/home');
+                    
+                }
+            } catch (e) {
+                console.log("Error in isLoggedIn function ", e)
+            }
+        }
+        isLoggedIn();
+    }, []);
+
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -18,7 +43,6 @@ function Login() {
 
             if (response.status === 200) {
                 console.log("Success");
-                localStorage.setItem('token', response.data.accessToken);
                 navigate('/home');
             }
         } catch (error) {

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<script src="../config.js"></script>
+<script>
+    var isSolved = false;
+    const originalAlert = window.alert;
+    const originalPrompt = window.prompt;
+    window.alert = function (message) {
+        originalAlert(message);
+        console.log("alert");
+        solveLab();
+    }
+
+    window.prompt = function (message) {
+        originalPrompt(message);
+        solveLab();
+    }
+
+    const solveLab = () => {
+        console.log('lab solved');
+
+        var labName = document.title;
+        fetch(`${backEndUrl}/Users/solveLab`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ Name: "xssLab2" }),
+            credentials: 'include'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        throw new Error('Not found');
+                    } else if (response.status === 500) {
+                        throw new Error('Server error');
+                    } else {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation: ' + error.message);
+            });
+
+        //window.location.reload();
+    }
+
+   async function checkLab() {
+    console.log("CheckLab function");
+    var labName = document.title;
+    try {
+        const response = await axios({
+            method: 'post',
+            url: `${backEndUrl}/Users/checkLab`,
+            data: {
+                Name: labName
+            },
+            withCredentials: true
+        });
+
+        if (response.status === 401) {
+            window.location.href = '/login';
+            return;
+        }
+
+        const data = response.data;
+        if (data) {
+            if (data === "LabIsCompleted") {
+                document.querySelector('.labIsCompleted').innerText = "Congratulations, you solved the lab!"
+                console.log("This lab have been solved");
+            } else {
+                document.querySelector('.labIsCompleted').innerText = "Lab yet to be solved"
+                console.log("This lab have NOT been solved");
+            }
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+
+
+
+
+
+
+    function handleSubmit(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+
+        var name = document.querySelector('input[name="name"]').value;
+        var text = document.querySelector('textarea').value;
+
+        // Store the values in localStorage
+        localStorage.setItem('name', name);
+        localStorage.setItem('text', text);
+
+        // Call loadComments to update the page immediately
+        loadComments();
+    }
+
+    function loadComments() {
+        // Get the values from localStorage
+        var name = localStorage.getItem('name');
+        var text = localStorage.getItem('text');
+
+        if (name && text) {
+            // Create h4 and p elements
+            var h4 = document.createElement('h4');
+            var p = document.createElement('p');
+
+            // Set their values
+            h4.innerHTML = name;
+            p.innerHTML = text;
+
+            // Append them to the usersComment div
+            var usersComment = document.querySelector('.usersComment');
+            usersComment.innerHTML = ''; // Clear the div first
+            usersComment.appendChild(h4);
+            usersComment.appendChild(p);
+        }
+    }
+
+    function LoadAndCheck() {
+        loadComments();
+        checkLab();
+    }
+
+
+
+
+</script>
+<body onload="LoadAndCheck()">
+    <div class="labIsCompleted"></div>
+    <h1>Reflected XSS </h1>
+     <p>
+         In the previous Lab you were able to trigger an alert() or prompt() function on your browser, you could also send that page to another user and whenever he open the page, the malicious JavaScript would run on their rowser<br />
+         Another way of performing an XSS attack is through Persistent XSS<br />
+
+         In this attack, a hacker will embed malicious JavaScript on the page in a way that everyone that visits this page will their script<br />
+         Think about an online store where customers can post reviews and comments about the products.<br />
+         An user can come and add a review to a certain product, his review will be stored on the page and every user that visits this page will be exposed to his review<br />
+         On the last lab, you could trigger an alert by reflecting the content on an input into the page, to solve this lab, add a comment to a product that will contain malicious JavaScript in it and be embedded in the page<br />
+         
+
+     </p>
+
+    <div>
+        <h2>Courses Page</h2>
+        <h3>Webb App PT by Rana Khalil</h3>
+
+        <div class="comment">
+            <h4>Yeroslav Tufeld</h4>
+            <p>
+                The course was great!
+
+            </p>
+        </div>
+        <div class="comment">
+            <h4>Patrick god</h4>
+            <p>
+                I 100% recomend this course!
+            </p>
+        </div>
+        <div class="usersComment">
+
+        </div>
+
+        <div class="newComment">
+            Add a comment:<br />
+                          <form onsubmit="handleSubmit(event)">
+                              <input type="text" name="name" /><br /><br />
+                              <textarea rows="10" cols="20"></textarea><br />
+                              <input type="submit" />
+                          </form>
+
+
+        </div>
+    </div>
+</body>
+</html>

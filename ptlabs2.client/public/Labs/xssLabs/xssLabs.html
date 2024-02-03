@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<script src="../config.js"></script>
+<script>
+    function checkLab() {
+        console.log("CheckLab function");
+        fetch(`${backEndUrl}/Users`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        })
+            .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                    return;
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle the data returned from the server
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+</script>
+<body>
+    <h1>xxsLabs</h1>
+    <a href="/Labs/xssLabs/xssLab1.html" target="_blank" rel="noopener noreferrer">lab1</a><br />
+    <a href="/Labs/xssLabs/xssLab2.html" target="_blank" rel="noopener noreferrer">lab2</a><br />
+    <a href="/Labs/xssLabs/xssLab3.html" target="_blank" rel="noopener noreferrer">lab3</a><br />
+</body>
+</html>

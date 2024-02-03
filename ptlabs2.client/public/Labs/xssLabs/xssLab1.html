@@ -3,69 +3,108 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title></title>
-    <script>
-        var isSolved=false;
-        const originalAlert = window.alert;
-        const originalPrompt = window.prompt;
-        window.alert = function(message) {
+    <title>xssLab1</title>
+
+</head>
+<script src="../config.js"></script>
+<script>
+
+    // import { backendUrl } from '../../env.js';
+    var isSolved = false;
+    const originalAlert = window.alert;
+    const originalPrompt = window.prompt;
+    window.alert = function (message) {
         originalAlert(message);
-        labSolved();
-        }
+        console.log("alert");
+        solveLab();
+    }
 
-        window.prompt = function(message) {
+    window.prompt = function (message) {
         originalPrompt(message);
-        labSolved();
-        }
+        solveLab();
+    }
 
-        const search = () => {
+    const search = () => {
 
-            var inputValue = document.querySelector('.input-value').value;
-            document.querySelector('.res-div').innerHTML = `You searched for <b>${inputValue}</b>`;
-        }
+        var inputValue = document.querySelector('.input-value').value;
+        document.querySelector('.res-div').innerHTML = `You searched for <b>${inputValue}</b>`;
+    }
 
-        const labSolved=()=>{
-            //console.log('lab solved');
-            const token = localStorage.getItem("token");
-            const labName = "XSS1";
-            fetch('users/solveLab', {
+    const solveLab = () => {
+        console.log('lab solved');
+
+        var labName = document.title;
+        fetch(`https://localhost:7134/Users/solveLab`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ Name: "xssLab1" }),
+            credentials: 'include'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        throw new Error('Not found');
+                    } else if (response.status === 500) {
+                        throw new Error('Server error');
+                    } else {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation: ' + error.message);
+            });
+
+        //window.location.reload();
+    }
+
+    function checkLab() {
+        console.log("CheckLab function");
+        var labName = document.title;
+        fetch(`https://localhost:7134/Users/checkLab`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ labName })
+            body: JSON.stringify({ Name: "xssLab1" }),
+            credentials: 'include'
+        })
+            .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                    throw new Error('Unauthorized');
+                }
+                return response.text();
             })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch((error) => {
-            console.error('Error:', error);
-            });
-        }
-
-        function checkLab(){
-            var token = localStorage.getItem("token");
-            var labName = "XSS1";
-            fetch(`${process.env.BACKEND}/users/solvelab` , {
-                headers:{
-                    'Authorization' : `Bearer ${token}`
+            .then(data => {
+                if (data === "LabIsCompleted") {
+                    document.querySelector('.labIsCompleted').innerText = "Congratulations, you solved the lab!"
+                    console.log("This lab have been solved");
+                } else {
+                    document.querySelector('.labIsCompleted').innerText = "Lab yet to be solved"
+                    console.log("This lab have NOT been solved");
                 }
             })
-            .then(response=>response.json())
-            var labExists = data.labs.some(lab => lab.labName === labName);
-            if (labExists) {
-            document.getElementById('labStatus').innerHTML = "You have already solved this lab.";
-            }
-        }
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
 
-    </script>
-</head>
+
+</script>
 <body onload="checkLab()">
-    <div id="labStatus">
 
-    </div>
     <h1>XSS Lab 1 </h1>
     <h2>Reflected XSS</h2>
+    <div class="labIsCompleted">
+
+    </div>
     <p>
         Reflected XXS happens when you can enter data to the website, such as using an input tag, and have what you entered written to the page.<br>
         For example, try to search for anything using the input below:<br>

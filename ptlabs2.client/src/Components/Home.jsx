@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+//import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+//import IDORLabs from './Components/Labs/IDORLabs/IDORLabs.jsx';
 
 function Home() {
     const [user, setUser] = useState(null);
@@ -11,8 +14,8 @@ function Home() {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                
-                const response = await axios.get('https://localhost:7134/Users', {
+
+                const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND}/Users`, {
 
                     withCredentials: true
                 });
@@ -44,11 +47,7 @@ function Home() {
         setUser(null);
         navigate('/login');
     }
-    //const getName = async (user) => {
-    //    let email = user.email;
-    //    let name = email.split('@')[0];
-    //    return name
-    //}
+
 
     if (!user) {
         return <div>Loading...</div>;
@@ -62,7 +61,9 @@ function Home() {
             <br />
             <div>
                 <h2>Labs</h2>
-                <a href="/Labs/xxsLabs/xxsLabs.html">XXS Labs</a>
+                <a href="/Labs/xssLabs/xssLabs.html">XXS Labs</a>
+                <Link to="/IDORLabs">IDOR Labs</Link>
+
 
             </div>
             

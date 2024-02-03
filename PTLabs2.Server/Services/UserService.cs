@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using PTLabs2.Server.Data;
 using PTLabs2.Server.Models;
 using System.Security.Claims;
@@ -9,6 +10,8 @@ namespace PTLabs2.Server.Services
     {
         Task<User> GetUser(ClaimsPrincipal userClaims);
         Task LogOut();
+        Task<bool> CheckLab(ClaimsPrincipal userClaims, LabDto labDto);
+        Task SolveLab(ClaimsPrincipal userClaims, string labName);
         
     }
 
@@ -26,7 +29,39 @@ namespace PTLabs2.Server.Services
             _signInManager = signInManager;
         }
 
+        public async Task<bool> CheckLab(ClaimsPrincipal userClaims, LabDto labDto)
+        {
+            var userId = userClaims.FindFirstValue(ClaimTypes.NameIdentifier);
+            var User = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
+            return User?.Labs.Any(lab => lab == labDto.Name) ?? false;
+        }
+
+
+        public async Task SolveLab(ClaimsPrincipal userClaims, string labName)
+        {
+            var userId = userClaims.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            //If the user havent completede that lab, add it
+            if (user.Labs == null)
+            {
+                user.Labs = new List<string>();
+            }
+            // Check if the lab name already exists in the user's Labs list
+            if (!user.Labs.Contains(labName))
+            {
+                user.Labs.Add(labName);
+
+                // Save changes to the database
+                await _dataContext.SaveChangesAsync();
+            }
+        }
 
         public async Task<User> GetUser(ClaimsPrincipal userClaims)
         {
@@ -39,5 +74,7 @@ namespace PTLabs2.Server.Services
         {
             await _signInManager.SignOutAsync();
         }
+
+
     }
 }

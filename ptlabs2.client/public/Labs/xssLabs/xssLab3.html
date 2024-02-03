@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>xssLab3</title>
+</head>
+
+<style>
+    .hintDiv, .hintDiv2, .hintDiv3 {
+        display: none;
+    }
+</style>
+<body onload="checkLab()">
+    <script src="../config.js"></script>
+    <script>
+
+
+        function showHint(event) {
+            var buttonName = event.target.name;
+            var div;
+            if (buttonName === 'hintDiv') {
+                div = document.querySelector('.hintDiv');
+            } else if (buttonName === 'hintDiv2') {
+                div = document.querySelector('.hintDiv2');
+            } else if (buttonName === 'hintDiv3') {
+                div = document.querySelector('.hintDiv3');
+            }
+            if (div) {
+                if (div.style.display === 'block') {
+                    div.style.display = 'none';
+                } else {
+                    div.style.display = 'block';
+                }
+            }
+        }
+
+
+        function calculate() {
+            var num1 = document.getElementById('num1').value;
+            var operator = document.getElementById('operator').value;
+            var num2 = document.getElementById('num2').value;
+            var expression = num1 + operator + num2;
+            var result = eval(expression);
+            document.getElementById('result').innerText = result;
+        }
+       
+
+        function solveLab3() {
+            var correctAnswer = document.querySelector('.hintDiv3').innerText.trim();
+            var usersAnswer = document.querySelector('.vulnerableCode').value.trim();
+            console.log('lab solved');
+          //  console.log(usersAnswer);
+            console.log(correctAnswer === usersAnswer);
+            if (correctAnswer === usersAnswer) {
+                console.log('lab solved');
+
+                var labName = document.title;
+                fetch(`${backEndUrl}/Users/solveLab`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ Name: XssLab3 }),
+                    credentials: 'include'
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            if (response.status === 404) {
+                                throw new Error('Not found');
+                            } else if (response.status === 500) {
+                                throw new Error('Server error');
+                            } else {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        console.log(data);
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation: ' + error.message);
+                    });
+
+              // window.location.reload();
+            } else {
+                alert("Try again");
+            
+            }
+        }
+        function checkLab() {
+            console.log("CheckLab function");
+            var labName = document.title;
+            fetch(`${backEndUrl}/Users/checkLab`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ Name: labName }),
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (response.status === 401) {
+                        window.location.href = '/login';
+                        return;
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    if (data) {
+                        if (data === "LabIsCompleted") {
+                            document.querySelector('.labIsCompleted').innerText = "Congratulations, you solved the lab!"
+                            console.log("This lab have been solved");
+                        } else {
+                            document.querySelector('.labIsCompleted').innerText = "Lab yet to be solved"
+                            console.log("This lab have NOT been solved");
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+    <div class="labIsCompleted"></div>
+    <h1>Preventing XSS</h1>
+    <p>
+        The key to preventing against XSS is to always sanitize user inputs and values comming from query strings, cookies, HTTP headers and other sources<br />
+        Also, never use dangerous tags such as:
+        <ul>
+            <li>document.write()</li>
+            <li>document.writeln()</li>
+            <li>innerHTML</li>
+            <li>outerHTML</li>
+            <li>insertAdjacentHTML()</li>
+            <li>setTimeout()</li>
+            <li> setInterval() </li>
+            <li>Function() constructor</li>
+
+        </ul>
+        <br />
+        When building your app, always be sure to sanitize any information that the user might be able to insert,
+        a good rule of thumb is to escape every > and < characters for example as well as it's URL encoded conterparts and to not use the dangerous functions listed above<br />
+    </p>
+
+    <br />
+
+    <div>
+        <h1>XSS Lab 3 </h1>
+        <h2>Preventing XSS</h2>
+        Here is a scope of code that was dangerously written and it's prone to XSS, insert 2 numbers and an operation symbol(such as "-" or "+") and click on the button to retreive the result:<br />
+     <div class="dangerousScope">
+ <input id="num1" type="text" placeholder="Enter first number">
+ <input id="operator" type="text" placeholder="Enter operator">
+ <input id="num2" type="text" placeholder="Enter second number">
+<button onclick="calculate()">Calculate</button>
+ <p id="result"></p>
+ </div>
+
+        Now try to insert any arbitrary JavaScript on that input and see if you can execute it properly<br />
+        <button class="hint" name="hintDiv" onclick="showHint(event)">Hint</button><br />
+        <div class="hintDiv">
+            alert('Hacked')<br />
+            prompt(8)<br />
+        </div>
+        <br />
+
+        Rewrite the function below so that the code gets less vulnerable to xss based on what you learned in this section:<br />
+        <textarea cols="70" rows="10" class="vulnerableCode">
+function calculate() {
+var expression = document.getElementById('expression').value;
+var result = eval(expression);
+document.getElementById('result').innerHTML = result;
+}
+ </textarea>
+    </div><br />
+    <button onclick="showHint(event)" name="hintDiv2">Hint</button><br />
+    <div class="hintDiv2">
+        <ul>
+            <li>Dont use the eval() function, write your own function to perform the operations</li>
+            <li>Don't use .innerHTML , look for an alternative</li>
+            <li>Don't allow the user to insert any char that could be used in an HTML tag</li>
+        </ul>
+    </div>
+
+    <button onclick="showHint(event)" name="hintDiv3">Hint</button><br />
+                                                            <div class="hintDiv3">
+                                                                function calculate() {<br />
+                                                                var num1 = document.getElementById('num1').value;<br />
+                                                                var operator = document.getElementById('operator').value;<br />
+                                                                var num2 = document.getElementById('num2').value;<br />
+                                                                <br />
+                                                                if (num1.includes("<") || num1.includes(">") || num1.includes("%3C") || num1.includes("%3E") ||<br />
+                                                                operator.includes("<") || operator.includes(">") || operator.includes("%3C") || operator.includes("%3E") ||<br />
+                                                                num2.includes("<") || num2.includes(">") || num2.includes("%3C") || num2.includes("%3E")) {<br />
+                                                                alert('Invalid input. Please do not use "<", ">", or URL encoded versions of them.');<br />
+                                                                return;<br />
+                                                                }<br />
+                                                                <br />
+                                                                if (isNaN(num1) || isNaN(num2)) {<br />
+                                                                alert('Invalid input. Please make sure to enter numbers for num1 and num2.');<br />
+                                                                return;<br />
+                                                                }<br />
+                                                                <br />
+                                                                if (operator !== "+" && operator !== "-" && operator !== "*" && operator !== "/") {<br />
+                                                                alert('Invalid operator. Please use one of the following operators: +, -, *, /');<br />
+                                                                return;<br />
+                                                                }<br />
+                                                                <br />
+                                                                var result;<br />
+                                                                switch (operator) {<br />
+                                                                case '+':<br />
+                                                                result = parseFloat(num1) + parseFloat(num2);<br />
+                                                                break;<br />
+                                                                case '-':<br />
+                                                                result = parseFloat(num1) - parseFloat(num2);<br />
+                                                                break;<br />
+                                                                case '*':<br />
+                                                                result = parseFloat(num1) * parseFloat(num2);<br />
+                                                                break;<br />
+                                                                case '/':<br />
+                                                                if (parseFloat(num2) !== 0) {<br />
+                                                                result = parseFloat(num1) / parseFloat(num2);<br />
+                                                                } else {<br />
+                                                                alert('Error: Division by zero is not allowed.');<br />
+                                                                return;<br />
+                                                                }<br />
+                                                                break;<br />
+                                                                }<br />
+                                                                <br />
+                                                                document.getElementById('result').innerText = result;<br />
+                                                                }<br />
+                                                            </div>
+    <button onclick="solveLab3()">Submit</button><br />
+
+</body>
+</html>

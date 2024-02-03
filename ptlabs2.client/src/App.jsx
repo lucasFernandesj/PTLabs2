@@ -5,6 +5,13 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 import Home from './components/Home';
 import Login from './components/Login';
+import xssLab1 from './Components/Labs/xssLabs/xssLab1';
+import IDORLabs from './Components/Labs/IDORLabs/IDORLabs.jsx';
+import IDORLab1 from './Components/Labs/IDORLabs/IDORLab1.jsx';
+import IDORLab2 from './Components/Labs/IDORLabs/IDORLab2.jsx';
+import IDORLab3 from './Components/Labs/IDORLabs/IDORLab3.jsx';
+import Cart from './Components/Labs/IDORLabs/Cart.jsx';
+
 
 function App() {
     return (
@@ -15,6 +22,12 @@ function App() {
                         <Route path="/login" element={<Login />} />
                         <Route path="/home" element={<Home />} />
                         <Route path="/" element={<Navigate to="/login" replace />} />
+                        <Route path="/xssLab1" component={xssLab1} />
+                        <Route path="/IDORLabs" element={<IDORLabs />} />
+                        <Route path="/IDORLabs/IDORLab1" element={<IDORLab1 />} />
+                        <Route path="/IDORLabs/IDORLab2" element={<IDORLab2 />} />
+                        <Route path="/IDORLabs/IDORLab3" element={<IDORLab3 />} />
+                        <Route path="/cart" element={<Cart />} />
                     </Routes>
                 </Router>
             </header>

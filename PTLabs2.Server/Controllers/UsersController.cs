@@ -40,5 +40,48 @@ namespace PTLabs2.Server.Controllers
             _userService.LogOut();
             return Ok();
         }
+
+        [HttpGet("isLoggedIn")]
+        public IActionResult Login()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return Ok("isAuthenticated");
+            }
+            else
+            {
+                return Ok();
+            }
+        }
+
+        [Authorize]
+        [HttpPost("checkLab")]
+        public async Task<IActionResult> CheckLab(LabDto labDto)
+        {
+            bool labIsCompleted = await _userService.CheckLab(User, labDto);
+            if (labIsCompleted) { return Ok("LabIsCompleted"); }
+            else { return Ok("Lab is NOT completed"); }
+            var name = labDto.Name;
+            return Ok(name);
+        }
+
+
+        [Authorize]
+        [HttpPost("solveLab")]
+        public async Task<IActionResult> SolveLab([FromBody] LabDto model)
+        {
+            try
+            {
+                string labName = model.Name;
+                await _userService.SolveLab(User, labName);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                // Handle exception
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
