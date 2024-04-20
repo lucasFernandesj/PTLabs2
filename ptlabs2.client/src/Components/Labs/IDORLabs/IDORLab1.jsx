@@ -114,7 +114,7 @@ const IDORLab1 = () => {
             <form onSubmit={handleSubmit}>
                 <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
                 <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-                <input type="submit" />
+                <button type="submit">Log in</button>
             </form>
         </>
     );
