@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { solveLab } from './solveLab';
+import { solveLab } from '../Utils.jsx';
 
 
 const usersCart = {

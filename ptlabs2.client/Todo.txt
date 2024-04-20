@@ -1,5 +1,13 @@
-IDORLab2lab.jsx - Faz axios request to see if user is authorized when function renders V
--open the app on Burp's browser and try to change the Name of the object that is being sent and then forward the request. V
--On the initial page, display other user's emails and after changing it on the request, display that you could change somebody else's email 
--On burp, it is possible to send request through BURP by going to File > Settings > proxy and enabling the proxy to 127.0.0.1:8080 , remember to turn this off at the end of your tests.
--
+On AuthenticationLab2 , return an user an render its data
+Then change the JWT on localstorage and rerender the page accordingly
+
+Solve the lab after changing the JWT to Yair
+
+---------------------------------------------------------------------------
+
+authenticationlab3 - brute force
+Implement a real log in function, if the user sends the right credentials, get a 200 response
+Check how Burp Suite returns the responses for the attacks
+Solve lab accordingly
+
+Move all of the show modal and hide modal functions to Utils.js

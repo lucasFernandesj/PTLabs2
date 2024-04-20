@@ -12,6 +12,10 @@ import IDORLab2 from './Components/Labs/IDORLabs/IDORLab2.jsx';
 import IDORLab3 from './Components/Labs/IDORLabs/IDORLab3.jsx';
 import Cart from './Components/Labs/IDORLabs/Cart.jsx';
 import IDORLab2lab from './Components/Labs/IDORLabs/IDORLab2lab';
+import AuthenticationLabs from './Components/Labs/AuthenticationLabs/AuthenticationLabs';
+import AuthenticationLab1 from './Components/Labs/AuthenticationLabs/AuthenticationLab1';
+import AuthenticationLab2 from './Components/Labs/AuthenticationLabs/AuthenticationLab2';
+import AuthenticationLab3 from './Components/Labs/AuthenticationLabs/AuthenticationLab3';
 
 
 function App() {
@@ -30,6 +34,10 @@ function App() {
                         <Route path="/IDORLabs/IDORLab3" element={<IDORLab3 />} />
                         <Route path="/cart" element={<Cart />} />
                         <Route path="/IDORLab2lab" element={<IDORLab2lab />} />
+                        <Route path="/AuthenticationLabs/*" element={<AuthenticationLabs />} />  {/*added /* after console warning*/}
+                        <Route path="/AuthenticationLab1" element={<AuthenticationLab1 />} />
+                        <Route path="/AuthenticationLab2" element={<AuthenticationLab2 />} />
+                        <Route path="/AuthenticationLab3" element={<AuthenticationLab3 />} />
                     </Routes>
                 </Router>
             </header>

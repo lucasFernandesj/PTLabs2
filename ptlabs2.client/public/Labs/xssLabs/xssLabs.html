@@ -7,31 +7,32 @@
 </head>
 <script src="../config.js"></script>
 <script>
-    function checkLab() {
-        console.log("CheckLab function");
-        fetch(`${backEndUrl}/Users`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include'
-        })
-            .then(response => {
-                if (response.status === 401) {
-                    window.location.href = '/login';
-                    return;
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Handle the data returned from the server
-                console.log(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }
-
+    //function checkLab() {
+    //    console.log("CheckLab function");
+    //    fetch(`${backEndUrl}/Users`, {
+    //        method: 'GET',
+    //        headers: {
+    //            'Content-Type': 'application/json',
+    //        },
+    //        credentials: 'include'
+    //    })
+    //        .then(response => {
+    //            if (response.status === 401) {
+    //                console.log("Unauthorized user -- xxsLabs.html")
+    //                window.location.href = '/login';
+    //                return;
+    //            }
+    //            return response.json();
+    //        })
+    //        .then(data => {
+    //            // Handle the data returned from the server
+    //            console.log(data);
+    //        })
+    //        .catch(error => {
+    //            console.error('Error:', error);
+    //        });
+    //}
+    console.log("xxsLabs page")
 </script>
 <body>
     <h1>xxsLabs</h1>

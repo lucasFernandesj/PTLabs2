@@ -1,8 +1,10 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { solveLab } from './solveLab';
+//import { solveLab } from './solveLab.js';
+import { solveLab } from '../Utils.jsx'
 
 
 const IDORLab2lab = () => {
@@ -66,7 +68,7 @@ const IDORLab2lab = () => {
             const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND}/api/Vulnerable/changeEmail`, { name: "Avi", Email: email }, { withCredentials: true });
             console.log(response.data); // logs the response data
             if (response.data.name !== "Avi") {
-                solveLab("IDORLab2");;
+                solveLab("IDORLab2");
             }
         } catch (error) {
             console.error(error); // logs any error that occurred during the request

@@ -20,7 +20,7 @@ function Login() {
                     withCredentials: true
                 });
 
-                console.log(response);
+               // console.log(response);
                 if (response.data === "isAuthenticated") {
                     
                     navigate('/home');
@@ -63,6 +63,7 @@ function Login() {
         }
     }
 
+    console.log("'test5@test.com' 'Test1!'");
     return (
         <div>
             <form onSubmit={handleSubmit}>

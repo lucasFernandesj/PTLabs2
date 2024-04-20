@@ -22,8 +22,8 @@ function Home() {
 
                 if (response.status === 200) {
                     setUser(response.data);
-                    console.log("Success");
-                    console.log(response.data);
+                   //console.log("Success");
+                  // console.log(response.data);
                     var name = response.data.email.split("@")[0];
                     setName(name);
                 }
@@ -61,9 +61,9 @@ function Home() {
             <br />
             <div>
                 <h2>Labs</h2>
-                <a href="/Labs/xssLabs/xssLabs.html">XXS Labs</a>
-                <Link to="/IDORLabs">IDOR Labs</Link>
-
+                <a href="/Labs/xssLabs/xssLabs.html">XXS Labs</a><br />
+                <Link to="/IDORLabs">IDOR Labs</Link><br />
+                <Link to="/AuthenticationLabs">Authentication Labs</Link><br />
 
             </div>
             
