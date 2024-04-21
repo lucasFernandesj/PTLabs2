@@ -1,11 +1,9 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 import axios from 'axios';
-
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const solveLab = async (labName) => {
     console.log('lab solved');
-
     try {
         const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND}/Users/solveLab`,
             { Name: labName },
@@ -28,8 +26,7 @@ export const solveLab = async (labName) => {
     } catch (error) {
         console.error('There was a problem with the fetch operation: ' + error.message);
     }
-}
-
+};
 
 export const checkLogin = async (navigate, setIsLoading) => {
     console.log("Check login function");
@@ -50,8 +47,7 @@ export const checkLogin = async (navigate, setIsLoading) => {
     }
 };
 
-
-export async function checkLab(setLabIsCompleted) {
+export const checkLab = async (setLabIsCompleted) => {
     console.log("CheckLab function");
     const fileName = window.location.pathname.split('/').pop(); // Extract the file name from the URL
     const labName = fileName.replace(/\.jsx$/, ''); // Remove the .jsx extension
@@ -83,6 +79,57 @@ export async function checkLab(setLabIsCompleted) {
     } catch (error) {
         console.error('Error:', error);
     }
-}
-        
-    
+};
+
+export const useNavigation = () => {
+    const navigate = useNavigate();
+    return navigate;
+};
+
+export const useLabCompletion = () => {
+    const [labIsCompleted, setLabIsCompleted] = useState('You have yet not completed this lab');
+    const [isLoading, setIsLoading] = useState(true);
+    return { labIsCompleted, setLabIsCompleted, isLoading, setIsLoading };
+};
+
+export const useModal = () => {
+    const [modal1hidden, setModal1Hidden] = useState(true);
+    const [modal2hidden, setModal2Hidden] = useState(true);
+    const [modal3hidden, setModal3Hidden] = useState(true);
+    const [modalSummaryHidden, setModalSummaryHidden] = useState(true);
+
+    const showTaskModal = (event) => {
+        if (event.target.id === "showTask1ModalBtn") {
+            setModal1Hidden(false);
+        } else if (event.target.id === "showTask2ModalBtn") {
+            setModal2Hidden(false);
+        } else if (event.target.id === "showTask3ModalBtn") {
+            setModal3Hidden(false);
+        } else if (event.target.id === "summary") {
+            setModalSummaryHidden(false);
+        }
+    };
+
+    const hideModal = (event) => {
+        if (event.target.id === "hideModal1Btn") {
+            setModal1Hidden(true);
+        } else if (event.target.id === "hideModal2Btn") {
+            setModal2Hidden(true);
+        } else if (event.target.id === "hideModal3Btn") {
+            setModal3Hidden(true);
+        } else if (event.target.id === "summary") {
+            setModalSummaryHidden(true);
+        } else if (event.target.id === "hideModal4Btn") {
+            setModal3Hidden(true);
+        }
+    };
+
+    return { modal1hidden, modal2hidden, modal3hidden, showTaskModal, hideModal, modalSummaryHidden };
+};
+
+export const useUserAuthentication = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
+    return { username, setUsername, password, setPassword, userIsLoggedIn, setUserIsLoggedIn };
+};

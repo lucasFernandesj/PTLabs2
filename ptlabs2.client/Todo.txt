@@ -11,3 +11,7 @@ Check how Burp Suite returns the responses for the attacks
 Solve lab accordingly
 
 Move all of the show modal and hide modal functions to Utils.js
+
+----------------------------------------------------------------------
+
+IDORLab3 - whern subm,itting the answer, send the answer to the backend and validate it, if its right, solve the lab

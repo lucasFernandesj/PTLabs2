@@ -169,5 +169,36 @@ namespace PTLabs2.Server.Controllers
                 return Unauthorized();
             }
         }
+
+        [HttpGet("friendsIDORLab3")]
+        public IActionResult friendsIDORLab3()
+        {
+            var Eli = new
+            {
+                Name = "Eli",
+                Address = "Petah Tikwa",
+                NumberOfPictures = 5,
+                CreditCardNumber = "1234 5678 9012 3456"
+            };
+
+            var Javier = new
+            {
+                Name = "Javier",
+                Address = "Ramat Gan",
+                NumberOfPictures = 10,
+                CreditCardNumber = "9876 5432 1098 7654"
+            };
+
+            var Micha = new
+            {
+                Name = "Micha",
+                Address = "Bnei Barak",
+                NumberOfPictures = 7,
+                CreditCardNumber = "2468 1357 3690 2587"
+            };
+
+            // Return the objects as JSON
+            return Ok(new List<object> { Eli, Javier, Micha });
+        }
     }
 }

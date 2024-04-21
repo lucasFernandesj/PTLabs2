@@ -6,7 +6,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import IDORLab1 from './IDORLab1';
 import IDORLab2 from './IDORLab2';
 import IDORLab3 from './IDORLab3';
-
+import IDORLab4 from './IDORLab4';
 const IDORLabs = () => {
 
 
@@ -56,11 +56,13 @@ const IDORLabs = () => {
             <Link to="/IDORLabs/IDORLab1">IDOR Lab 1</Link><br />
             <Link to="/IDORLabs/IDORLab2">IDOR Lab 2</Link><br />
             <Link to="/IDORLabs/IDORLab3">IDOR Lab 3</Link><br />
+            
 
             <h2>Open in a New tab</h2>
             <a href="/IDORLabs/IDORLab1" target="_blank" rel="noopener noreferrer">IDOR Lab 1</a><br />
             <a href="/IDORLabs/IDORLab2" target="_blank" rel="noopener noreferrer">IDOR Lab 2</a><br />
             <a href="/IDORLabs/IDORLab3" target="_blank" rel="noopener noreferrer">IDOR Lab 3</a><br />
+           
 
 
 
@@ -68,6 +70,7 @@ const IDORLabs = () => {
                 <Route path="/IDORLabs/IDORLab1" component={IDORLab1} />
                 <Route path="/IDORLabs/IDORLab2" component={IDORLab2} />
                 <Route path="/IDORLabs/IDORLab3" component={IDORLab3} />
+                <Route path="/IDORLabs/IDORLab4" component={IDORLab4} />
             </Routes>
 
         </div>
