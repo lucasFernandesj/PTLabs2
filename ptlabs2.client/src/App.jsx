@@ -16,6 +16,8 @@ import AuthenticationLabs from './Components/Labs/AuthenticationLabs/Authenticat
 import AuthenticationLab1 from './Components/Labs/AuthenticationLabs/AuthenticationLab1';
 import AuthenticationLab2 from './Components/Labs/AuthenticationLabs/AuthenticationLab2';
 import AuthenticationLab3 from './Components/Labs/AuthenticationLabs/AuthenticationLab3';
+import FilePathTransversalLabs from './Components/Labs/FilePathTransversalLabs/FilePathTransversalLabs';
+import FilePathTransversalLab1 from './Components/Labs/FilePathTransversalLabs/FilePathTransversalLab1';
 
 
 function App() {
@@ -38,6 +40,8 @@ function App() {
                         <Route path="/AuthenticationLab1" element={<AuthenticationLab1 />} />
                         <Route path="/AuthenticationLab2" element={<AuthenticationLab2 />} />
                         <Route path="/AuthenticationLab3" element={<AuthenticationLab3 />} />
+                        <Route path="/FilePathTransversalLabs" element={<FilePathTransversalLabs />} />
+                        <Route path="/FilePathTransversalLab1" element={<FilePathTransversalLab1 />} />
                     </Routes>
                 </Router>
             </header>

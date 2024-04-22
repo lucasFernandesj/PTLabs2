@@ -170,7 +170,7 @@ namespace PTLabs2.Server.Controllers
             }
         }
 
-        [HttpGet("friendsIDORLab3")]
+        [HttpGet("friendsListIDORLab3")]
         public IActionResult friendsIDORLab3()
         {
             var Eli = new
@@ -200,5 +200,20 @@ namespace PTLabs2.Server.Controllers
             // Return the objects as JSON
             return Ok(new List<object> { Eli, Javier, Micha });
         }
+
+        [HttpPost("submitAnswerIDORLab3")]
+        public IActionResult submitAnswerIDORLab3([FromBody] AnswerIDOLab3Dto answer)
+        {
+            if(answer.answer== "9876 5432 1098 7654")
+            {
+                return Ok("Conagratulations, you have solved the lab!");
+            }
+            else
+            {
+                return BadRequest("Wrong, try again");
+            }
+        }
+
+
     }
 }

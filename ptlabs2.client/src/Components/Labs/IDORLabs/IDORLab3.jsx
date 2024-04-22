@@ -19,7 +19,7 @@ const IDORLab3 = () => {
 
     const fetchFriends = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND}/api/Vulnerable/friendsIDORLab3`);
+            const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND}/api/Vulnerable/friendsListIDORLab3`);
             console.log(response.data);
             setFriends(response.data);
         } catch (error) {
@@ -48,10 +48,30 @@ const IDORLab3 = () => {
 
 
 
-    const submitForm =(event) => {
+    const submitForm = async (event) => {
         event.preventDefault();
-        alert(answer)
+        console.log("ANSWER ",answer)
+        try {
+            const response = await axios({
+                method: 'post',
+                url: `${import.meta.env.VITE_APP_BACKEND}/api/Vulnerable/submitAnswerIDORLab3`,
+                data: { answer: answer }, // Include the answer field
+                withCredentials: true
+            });
+
+            if (response.status === 200) {
+                alert("Congratulations, you have solved the lab!");
+                solveLab("IDORLab3");
+                checkLab(setLabIsCompleted);
+            } else if (response.status === 400) {
+                alert("Wrong, try again");
+            }
+        } catch (error) {
+            alert(JSON.stringify(error.response.data));
+            console.log(error);
+        }
     }
+
 
 
 
