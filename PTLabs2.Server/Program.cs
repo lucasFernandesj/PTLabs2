@@ -35,10 +35,10 @@ namespace PTLabs2.Server
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowMyOrigin",
-                    builder => builder.WithOrigins("https://localhost:5173") // Replace with your React app's URL
+                    builder => builder.WithOrigins("https://localhost:5173") 
                                       .AllowAnyHeader()
                                       .AllowAnyMethod()
-                                      .AllowCredentials()); // Add this line
+                                      .AllowCredentials()); 
             });
 
             var app = builder.Build();

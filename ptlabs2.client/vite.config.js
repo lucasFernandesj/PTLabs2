@@ -19,15 +19,15 @@ if (!certificateName) {
     process.exit(-1);
 }
 
-const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
-const keyFilePath = path.join(baseFolder, `${certificateName}.key`);
+const certDirectory = path.join(baseFolder, `${certificateName}.pem`);
+const keyDirectory = path.join(baseFolder, `${certificateName}.key`);
 
-if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
+if (!fs.existsSync(certDirectory) || !fs.existsSync(keyDirectory)) {
     if (0 !== child_process.spawnSync('dotnet', [
         'dev-certs',
         'https',
         '--export-path',
-        certFilePath,
+        certDirectory,
         '--format',
         'Pem',
         '--no-password',
@@ -53,8 +53,8 @@ export default defineConfig({
         },
         port: 5173,
         https: {
-            key: fs.readFileSync(keyFilePath),
-            cert: fs.readFileSync(certFilePath),
+            key: fs.readFileSync(keyDirectory),
+            cert: fs.readFileSync(certDirectory),
         }
     }
 })

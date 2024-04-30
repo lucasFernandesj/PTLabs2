@@ -16,3 +16,12 @@ Move all of the show modal and hide modal functions to Utils.js
 
 IDORLab3 - whern subm,itting the answer, send the answer to the backend and validate it, if its right, solve the lab
 -start path transversal labs
+prevent path traversal - https://www.stackhawk.com/blog/net-path-traversal-guide-examples-and-prevention/#:~:text=Broadly%20speaking%2C%20path%20traversal%20is,user%20input%20into%20the%20application.
+
+The Path.GetFileName(filename) function in .NET helps to sanitize the input by returning only the file name and extension of the specified path string. The returned value excludes any directory or volume information. So, if a user tries to send /../../.., it will return an empty string, effectively preventing directory traversal.
+
+------------------------------
+API vulnerabilities:
+Excessive data exposure
+Not limiting the ammount of requests
+API not checking if the user is normal or admin before performing an action , a vulnerable API would check for a value on the headers l ike isAdmin=true and use it as a check before performing the action, this is flawed because we can add this header on Burp.A safe API checks for the claims of the user on the backend

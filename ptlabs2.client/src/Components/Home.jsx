@@ -64,7 +64,8 @@ function Home() {
                 <a href="/Labs/xssLabs/xssLabs.html">XXS Labs</a><br />
                 <Link to="/IDORLabs">IDOR Labs</Link><br />
                 <Link to="/AuthenticationLabs">Authentication Labs</Link><br />
-                <Link to="/FilePathTransversalLabs">File Path transversal Labs</Link><br />
+                <Link to="/DirectoryTraversalLabs">File Path traversal Labs</Link><br />
+                <Link to="/APILabs">APILabs</Link><br />
 
             </div>
             

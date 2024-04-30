@@ -9,6 +9,7 @@
     <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist</PublishAssetsDirectory>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\Components\Labs\FilePathTransversalLabs\" />
+    <Folder Include="public\Secret\" />
+    <Folder Include="src\Components\Labs\APILabs\" />
   </ItemGroup>
 </Project>

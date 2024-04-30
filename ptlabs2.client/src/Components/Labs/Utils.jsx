@@ -96,35 +96,63 @@ export const useModal = () => {
     const [modal1hidden, setModal1Hidden] = useState(true);
     const [modal2hidden, setModal2Hidden] = useState(true);
     const [modal3hidden, setModal3Hidden] = useState(true);
+    const [modal4hidden, setModal4Hidden] = useState(true);
+    const [modal5hidden, setModal5Hidden] = useState(true);
     const [modalSummaryHidden, setModalSummaryHidden] = useState(true);
 
     const showTaskModal = (event) => {
-        if (event.target.id === "showTask1ModalBtn") {
-            setModal1Hidden(false);
-        } else if (event.target.id === "showTask2ModalBtn") {
-            setModal2Hidden(false);
-        } else if (event.target.id === "showTask3ModalBtn") {
-            setModal3Hidden(false);
-        } else if (event.target.id === "summary") {
-            setModalSummaryHidden(false);
+        switch (event.target.id) {
+            case "showTask1ModalBtn":
+                setModal1Hidden(false);
+                break;
+            case "showTask2ModalBtn":
+                setModal2Hidden(false);
+                break;
+            case "showTask3ModalBtn":
+                setModal3Hidden(false);
+                break;
+            case "summary":
+                setModalSummaryHidden(false);
+                break;
+            case "showTask4ModalBtn":
+                setModal4Hidden(false);
+                break;
+            case "showTask5ModalBtn":
+                setModal5Hidden(false);
+                break;
+            default:
+                // Handle other cases if necessary
+                break;
         }
     };
 
     const hideModal = (event) => {
-        if (event.target.id === "hideModal1Btn") {
-            setModal1Hidden(true);
-        } else if (event.target.id === "hideModal2Btn") {
-            setModal2Hidden(true);
-        } else if (event.target.id === "hideModal3Btn") {
-            setModal3Hidden(true);
-        } else if (event.target.id === "summary") {
-            setModalSummaryHidden(true);
-        } else if (event.target.id === "hideModal4Btn") {
-            setModal3Hidden(true);
+        switch (event.target.id) {
+            case "hideModal1Btn":
+                setModal1Hidden(true);
+                break;
+            case "hideModal2Btn":
+                setModal2Hidden(true);
+                break;
+            case "hideModal3Btn":
+                setModal3Hidden(true);
+                break;
+            case "summary":
+                setModalSummaryHidden(true);
+                break;
+            case "hideModal4Btn":
+                setModal4Hidden(true);
+                break;
+            case "hideModal5Btn":
+                setModal5Hidden(true);
+                break;
+            default:
+                // Handle other cases if necessary
+                break;
         }
     };
 
-    return { modal1hidden, modal2hidden, modal3hidden, showTaskModal, hideModal, modalSummaryHidden };
+    return { modal1hidden, modal2hidden, modal3hidden, modal4hidden,modal5hidden,showTaskModal, hideModal, modalSummaryHidden };
 };
 
 export const useUserAuthentication = () => {

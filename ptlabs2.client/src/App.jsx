@@ -16,8 +16,10 @@ import AuthenticationLabs from './Components/Labs/AuthenticationLabs/Authenticat
 import AuthenticationLab1 from './Components/Labs/AuthenticationLabs/AuthenticationLab1';
 import AuthenticationLab2 from './Components/Labs/AuthenticationLabs/AuthenticationLab2';
 import AuthenticationLab3 from './Components/Labs/AuthenticationLabs/AuthenticationLab3';
-import FilePathTransversalLabs from './Components/Labs/FilePathTransversalLabs/FilePathTransversalLabs';
-import FilePathTransversalLab1 from './Components/Labs/FilePathTransversalLabs/FilePathTransversalLab1';
+import DirectoryTraversalLabs from './Components/Labs/DirectoryTraversalLabs/DirectoryTraversalLabs';
+import DirectoryTraversalLab1 from './Components/Labs/DirectoryTraversalLabs/DirectoryTraversalLab1';
+import APILabs from './Components/Labs/APILabs/APILabs';
+import APILab1 from './Components/Labs/APILabs/APILab1';
 
 
 function App() {
@@ -40,8 +42,10 @@ function App() {
                         <Route path="/AuthenticationLab1" element={<AuthenticationLab1 />} />
                         <Route path="/AuthenticationLab2" element={<AuthenticationLab2 />} />
                         <Route path="/AuthenticationLab3" element={<AuthenticationLab3 />} />
-                        <Route path="/FilePathTransversalLabs" element={<FilePathTransversalLabs />} />
-                        <Route path="/FilePathTransversalLab1" element={<FilePathTransversalLab1 />} />
+                        <Route path="/DirectoryTraversalLabs" element={<DirectoryTraversalLabs />} />
+                        <Route path="/DirectoryTraversalLab1" element={<DirectoryTraversalLab1 />} />
+                        <Route path="/APILabs" element={<APILabs />} />
+                        <Route path="/APILab1" element={<APILab1 />} />
                     </Routes>
                 </Router>
             </header>

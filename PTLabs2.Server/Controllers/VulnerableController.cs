@@ -13,7 +13,12 @@ namespace PTLabs2.Server.Controllers
     [ApiController]
     public class VulnerableController : ControllerBase
     {
+        private IWebHostEnvironment _hostingEnvironment;
 
+        public VulnerableController(IWebHostEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
 
         [HttpPost("changeEmail")]
         public async Task<IActionResult> ChangeEmail([FromBody] VulnerableEmailDto vulnerableEmailDto)
@@ -130,15 +135,15 @@ namespace PTLabs2.Server.Controllers
         [HttpGet("passwordsList")]
         public IActionResult GetPasswordsFile([FromServices] IWebHostEnvironment hostingEnvironment)
         {
-            string filePath = Path.Combine(hostingEnvironment.ContentRootPath, "App_Data", "Passwords.txt");
+            string Directory = Path.Combine(hostingEnvironment.ContentRootPath, "App_Data", "Passwords.txt");
 
-            if (!System.IO.File.Exists(filePath))
+            if (!System.IO.File.Exists(Directory))
             {
                 return NotFound(); // File not found
             }
 
             var memory = new MemoryStream();
-            using (var stream = new FileStream(filePath, FileMode.Open))
+            using (var stream = new FileStream(Directory, FileMode.Open))
             {
                 stream.CopyTo(memory);
             }
@@ -214,6 +219,54 @@ namespace PTLabs2.Server.Controllers
             }
         }
 
+        [HttpGet("media/{filename}")]
+        public IActionResult GetFile(string filename)
+        {
+            // Vulnerable to Directory Traversal
+            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, filename);
+            if (System.IO.File.Exists(filePath))
+            {
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                return File(fileBytes, "application/octet-stream", filename);
+            }
+            return NotFound();
+        }
+
+
+        [HttpGet("SecureMedia/{filename}")]
+        public IActionResult GetFileSecure(string filename)
+        {
+            // Preventing Directory Traversal
+            var fileName = Path.GetFileName(filename); // Sanitize input
+            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileName); //.NET automatically removes ../../ tentatives with those lines
+            if (System.IO.File.Exists(filePath))
+            {
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                return File(fileBytes, "application/octet-stream", fileName);
+            }
+            return NotFound();
+        }
+
+
+        [HttpPost("DirectoryTraversalLab1Answer")]
+        public IActionResult DirectoryTraversalLab1Answer([FromBody] AnswerDto Answer)
+        {
+            if(Answer.Answer=="you found me")
+            {
+                AnswerDto RightAnswer = new AnswerDto()
+                {
+                    Answer = "you found me",
+                    isRight=true
+
+                };
+            return Ok(RightAnswer);
+
+            }
+            else
+            {
+                return BadRequest("Wrong answer");
+            }
+        }
 
     }
 }
