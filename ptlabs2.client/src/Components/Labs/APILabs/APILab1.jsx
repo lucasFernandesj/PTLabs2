@@ -44,34 +44,58 @@ const APILab1 = () => {
 
  
 
-    const submitAnswer = () => {
+        let count = 0;
+    const submitAnswer = async() => {
         let answer = prompt("Submit your answer");
         console.log(answer);
+        try {
+            const response = await axios({
+                method: 'post',
+                url: `${import.meta.env.VITE_APP_BACKEND}/api/APIOWASP/Lab1Answer`,
+                data: { Answer: answer },
+                withCredentials: true
+            });
+            count++;
+            if (response.data.isRight) {
+                solveLab("APILab1");
+                alert("Congratulations, you have solved the lab!");
+                window.location.reload();
+            } else {
+                if (count == 2) {
+                    alert("Are you trying to brute force the answer?")
+                }
+                alert("try again")
+
+            }
+        }
+        catch (error) {
+            console.error(error)
+        }
+
     }
     return (
         <>
             <h1>API Lab 1</h1>
             <h3>{labIsCompleted}</h3>
-            <h2>BOLA - Broken Level Authorization </h2>
-            <h3>Modifying parameters of the request to retreive information that you shouldn't have access to</h3>
+            <h2>BOLA - Broken Level Authorization</h2>
+            <h3>Modifying parameters of the request to retrieve information that you shouldn't have access to</h3>
             <button id="showTask1ModalBtn" onClick={(event) => showTaskModal(event)}>Task 1</button><br />
             {!modal1hidden && (
                 <div className="modal-backdrop">
                     <div className="modal">
                         <div className="modal-content">
-                            Some developers build APIs just thinking that the API shoul receive a request, process it and respond to the user<br />
-                            With this inb mind, the developer might forget to chek who is making the request, if who is making the request have authorization to access certain data and so forth<br>
-                            We will see an example of an API that receives a request, fetches relevant data from a database and returns it to the user not caring about who is making the request and if it should receive the data that they are requesting for</br>
-                            On the Demo App bellow, you can see a landing page, go to the tickets tab to view your open tickets<br />
-                            Once you open the pop-up to see your tickets, you are making a request to the backend to retreive your data<br />
-                            Intercept that request on Burp Suite and send it to the repeater,you will notice that there is a parameter ?ticketsAccountID=id<br />
-                            If the developer didn't implement checks on the back end to verify that only the user that owns the tickets can see them, you may be able to see someone else's tickets by changing the value of ?ticketsAccountID<br />
-                            Send that request to the intruder, wrap the ID inside the $$ and go to the payloads tab<br />
-                            On Payload type, select Numbers<br />
-                            Enter -- From: 0 , To: 10<br />
-                            Click on start attack<br />
-                            Check for the responses of each request, maybe you will find one that exists and returns a value<br/>
-                            
+                            Some developers build APIs just thinking that the API should receive a request, process it, and respond to the user.<br />
+                            With this in mind, the developer might forget to check who is making the request, if who is making the request has authorization to access certain data, and so forth.<br />
+                            We will see an example of an API that receives a request, fetches relevant data from a database, and returns it to the user without caring about who is making the request and if it should receive the data that they are requesting for.<br />
+                            On the Demo App below, you can see a landing page, go to the tickets tab to view your open tickets.<br />
+                            Once you open the pop-up to see your tickets, you are making a request to the backend to retrieve your data.<br />
+                            Intercept that request on Burp Suite and send it to the repeater, you will notice that there is a parameter ?ticketsAccountID=id.<br />
+                            If the developer didn't implement checks on the backend to verify that only the user that owns the tickets can see them, you may be able to see someone else's tickets by changing the value of ?ticketsAccountID.<br />
+                            Send that request to the intruder, wrap the ID inside the $$ and go to the payloads tab.<br />
+                            On Payload type, select Numbers.<br />
+                            Enter -- From: 0 , To: 10.<br />
+                            Click on start attack.<br />
+                            Check for the responses of each request, maybe you will find one that exists and returns a value.<br />
                             <button id="hideModal1Btn" onClick={(event) => hideModal(event)}>Hide</button>
                         </div>
                     </div>
@@ -83,9 +107,9 @@ const APILab1 = () => {
                     <div className="modal">
                         <div className="modal-content">
                             Noticed anything different?<br />
-                            Is there any request that does in fact returns data?<br />
-                            If yes, submit it's user's ID to solve the lab<br/><br/>
-                            <button onClick={submitAnswer }>Submit Answer</button>
+                            Is there any request that does in fact return data?<br />
+                            If yes, submit its user's ID to solve the lab.<br /><br />
+                            <button onClick={submitAnswer}>Submit Answer</button>
                             <button id="hideModal2Btn" onClick={(event) => hideModal(event)}>Hide</button>
                         </div>
                     </div>
@@ -96,14 +120,14 @@ const APILab1 = () => {
                 <div className="modal-backdrop">
                     <div className="modal">
                         <div className="modal-content">
-                            When developing an API in ASP.NET, always use the [Authorize] header so that only authenticated users can consume that endpoint<br>
-                            Inside each endpoint that returns data, make sure to check the claims of the user through their JWT and only return data that belongs to that user<br/>                            </br>
+                            When developing an API in ASP.NET, always use the [Authorize] header so that only authenticated users can consume that endpoint.<br />
+                            Inside each endpoint that returns data, make sure to check the claims of the user through their JWT and only return data that belongs to that user.<br />
                             <button id="hideModal3Btn" onClick={(event) => hideModal(event)}>Hide</button>
                         </div>
                     </div>
                 </div>
             )}
-            <hr></hr>
+            <hr />
             <div>
                 <h3>Hello Eli</h3>
                 Orders:
@@ -112,35 +136,33 @@ const APILab1 = () => {
                     <div className="modal-backdrop">
                         <div className="modal">
                             <div className="modal-content">
-                                Order #25467:
-                                Status : Delivered
+                                Order #25467:<br />
+                                Status: Delivered<br />
                                 <ul>
                                     <li>CISCO router</li>
                                     <li>Samsung Monitor</li>
-                                   
                                 </ul>
-                                Order #25326:
-                                Status : Delivered
+                                Order #25326:<br />
+                                Status: Delivered<br />
                                 <ul>
                                     <li>White Shirt</li>
                                     <li>Black Pants</li>
-
                                 </ul>
                                 <button id="hideModal4Btn" onClick={(event) => hideModal(event)}>Hide</button>
                             </div>
                         </div>
                     </div>
                 )}
-                Tickets
+                Tickets<br />
                 <button id="showTask5ModalBtn" onClick={(event) => showTaskModal(event)}>Display Tickets</button><br />
                 {!modal5hidden && (
                     <div className="modal-backdrop">
                         <div className="modal">
                             <div className="modal-content">
-                                {data && ( 
+                                {data && (
                                     <div>
-                                        {data.title && <h1>{data.title}</h1>} 
-                                        {data.body && <p>{data.body}</p>} 
+                                        {data.title && <h1>{data.title}</h1>}
+                                        {data.body && <p>{data.body}</p>}
                                     </div>
                                 )}
                                 <button id="hideModal5Btn" onClick={(event) => hideModal(event)}>Hide</button>
@@ -148,10 +170,12 @@ const APILab1 = () => {
                         </div>
                     </div>
                 )}
-
             </div>
+            <br />
+            
             TODO: Implement function and endpoint to submit the correct answer
         </>
+
     )
 }
 

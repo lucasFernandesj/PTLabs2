@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PTLabs2.Server.Models;
 
 namespace PTLabs2.Server.Controllers
 {
@@ -23,6 +24,24 @@ namespace PTLabs2.Server.Controllers
             else
             {
                 return NotFound();
+            }
+        }
+
+        [HttpPost("Lab1Answer")]
+        public IActionResult Lab1Answer([FromBody] AnswerDto answer)
+        {
+            if (answer.Answer == "5")
+            {
+                AnswerDto rightAnswer = new AnswerDto
+                {
+                    Answer = answer.Answer,
+                    isRight = true
+                };
+            return Ok(rightAnswer);
+            }
+            else
+            {
+                return Ok();
             }
         }
     }
