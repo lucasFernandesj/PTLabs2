@@ -29,7 +29,7 @@ export const solveLab = async (labName) => {
 };
 
 export const checkLogin = async (navigate, setIsLoading) => {
-    console.log("Check login function");
+   // console.log("Check login function");
     setIsLoading(true); // Set loading to true before making the request
     try {
         const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND}/Users`, {
@@ -121,7 +121,6 @@ export const useModal = () => {
                 setModal5Hidden(false);
                 break;
             default:
-                // Handle other cases if necessary
                 break;
         }
     };
@@ -147,7 +146,6 @@ export const useModal = () => {
                 setModal5Hidden(true);
                 break;
             default:
-                // Handle other cases if necessary
                 break;
         }
     };

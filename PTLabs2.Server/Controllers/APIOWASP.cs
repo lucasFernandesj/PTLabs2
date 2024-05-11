@@ -44,5 +44,40 @@ namespace PTLabs2.Server.Controllers
                 return Ok();
             }
         }
+
+        [HttpPost("ChangePasswordAPILab2")]
+        public IActionResult ChangePasswordAPILab2([FromBody] ChangePasswordDto changePasswordDto)
+        {
+            if(changePasswordDto.Email == "john@test.com")
+            {
+                if(changePasswordDto.LastOTPSent ==changePasswordDto.OTP)
+                {
+                    return Ok("all right john");
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+
+
+            }else if(changePasswordDto.Email == "test@test.com")
+            {
+                if(changePasswordDto.LastOTPSent == changePasswordDto.OTP)
+                {
+                    return Ok("all right test");
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+
+
+
+        }
     }
 }

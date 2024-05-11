@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PTLabs2.Server.Data;
 using PTLabs2.Server.Services;
@@ -14,6 +15,7 @@ namespace PTLabs2.Server.Controllers
     {
         private readonly DataContext _dataContext;
         private readonly IUserService _userService;
+
         public UsersController(IUserService userService, DataContext dataContext)
         {
             _userService = userService;
@@ -82,6 +84,8 @@ namespace PTLabs2.Server.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+       
 
     }
 }

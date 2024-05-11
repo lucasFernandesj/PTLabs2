@@ -35,10 +35,10 @@ namespace PTLabs2.Server
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowMyOrigin",
-                    builder => builder.WithOrigins("https://localhost:5173") 
+                    builder => builder.WithOrigins("https://localhost:5173", "https://93d6-217-194-129-86.ngrok-free.app", "http://localhost:3000" , "https://localhost:3000")
                                       .AllowAnyHeader()
                                       .AllowAnyMethod()
-                                      .AllowCredentials()); 
+                                      .AllowCredentials());
             });
 
             var app = builder.Build();

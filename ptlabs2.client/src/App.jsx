@@ -20,6 +20,8 @@ import DirectoryTraversalLabs from './Components/Labs/DirectoryTraversalLabs/Dir
 import DirectoryTraversalLab1 from './Components/Labs/DirectoryTraversalLabs/DirectoryTraversalLab1';
 import APILabs from './Components/Labs/APILabs/APILabs';
 import APILab1 from './Components/Labs/APILabs/APILab1';
+import APILab2 from './Components/Labs/APILabs/APILab2';
+import EmailServer from './Components/Labs/APILabs/EmailServer';
 
 
 function App() {
@@ -46,6 +48,8 @@ function App() {
                         <Route path="/DirectoryTraversalLab1" element={<DirectoryTraversalLab1 />} />
                         <Route path="/APILabs" element={<APILabs />} />
                         <Route path="/APILab1" element={<APILab1 />} />
+                        <Route path="/APILab2" element={<APILab2 />} />
+                        <Route path="/EmailServer" element={<EmailServer />} />
                     </Routes>
                 </Router>
             </header>

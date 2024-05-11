@@ -27,3 +27,8 @@ Not limiting the ammount of requests
 API not checking if the user is normal or admin before performing an action , a vulnerable API would check for a value on the headers l ike isAdmin=true and use it as a check before performing the action, this is flawed because we can add this header on Burp.A safe API checks for the claims of the user on the backend
 
 APILab1 - implement function to submit answer, implement endpoint to receive the answer
+
+
+APILab2 - The functions that check if the OTP is correct work, now implement a function to log in after changing the passwords
+the function checks the new password of john after receiving a 200 response from the change password function.
+If the user logs in with the new credentials, he sees the home page of joh and there is a button to solve the lab
