@@ -17,6 +17,8 @@ const APILab2 = () => {
     const [showForgotPasswordForm, setShowForgotPasswordForm] = useState(true);
     const [otp, setOtp] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    const [testLoggedIn, setTestLoggedIn] = useState(false);
+    const [johnLoggedIn, setJohnLoggedIn] = useState(false);
 
 
 
@@ -40,8 +42,30 @@ const APILab2 = () => {
 
     const handleSubmitLogIn = (e) => {
         e.preventDefault();
-        console.log(handleSubmitLogIn);
+
+
+        if (email.trim() === "test@test.com") {
+
+        if (password === localStorage.getItem('tnp')) {
+            setJohnLoggedIn(false)
+            setTestLoggedIn(true);
+            alert('Test logged in')
+        } else {
+            alert('Wrong credentials')
+        }
+        } else if (email.trim() === "john@test.com") {
+            if (password === localStorage.getItem('jnp')) {
+                setTestLoggedIn(false);
+                setJohnLoggedIn(true)
+                alert('John logged in')
+            } else {
+                alert('Wrong credentials')
+            }
+        
+           
+        }
     }
+
 
     const handleSubmitForgotPassword = (e) => {
         e.preventDefault();
@@ -131,7 +155,7 @@ const APILab2 = () => {
                 // Get the first element of the array
                 let lastOtpSent = forgotPasswordOTPs[0];
                 let obj = { Email: email, Otp: otp, LastOTPSent: lastOtpSent, NewPassword: newPassword }
-                console.log("obj ", obj)
+                //console.log("obj ", obj)
                 const response = await axios({
                     method: 'post',
                     url: `${import.meta.env.VITE_APP_BACKEND}/api/APIOWASP/ChangePasswordAPILab2`,
@@ -139,7 +163,10 @@ const APILab2 = () => {
                     withCredentials: true
                 });
 
-                console.log('ChangePasswordAPILab2 ', response);
+                console.log('ChangePasswordAPILab2 ', response.data);
+                //If it's successfulll, set the new password for test
+                console.log(response.data)
+                localStorage.setItem('tnp', response.data.newPassword);
 
 
             } catch (error) {
@@ -147,8 +174,8 @@ const APILab2 = () => {
             }
         } else if (email === 'john@test.com') {
             try {
-                let johnsOTP = localStorage.getItem("johnsOTP");
-                let obj = { Email: email, Otp: otp, LastOTPSent: johnsOTP, NewPassword: newPassword }
+                //let johnsOTP = localStorage.getItem("johnsOTP");
+                let obj = { Email: email, Otp: otp, NewPassword: newPassword }
                 console.log("obj ", obj)
                 const response = await axios({
                     method: 'post',
@@ -157,7 +184,10 @@ const APILab2 = () => {
                     withCredentials: true
                 });
 
-                console.log('ChangePasswordAPILab2 ', response);
+                console.log('ChangePasswordAPILab2 ', response.data);
+                //If it's successfulll, set the new password for john
+                console.log('johns new password: ', response.data.newPassword)
+                localStorage.setItem('jnp', response.data.newPassword);
 
 
             } catch (error) {
@@ -167,10 +197,21 @@ const APILab2 = () => {
 
     }
 
+    const submitFlag = () => {
+        let flag = prompt("Enter the flag");
+        if (flag === "3467") {
+            solveLab("APILab2");
+            alert("Congratulations, you solved the lab!")
+        } else {
+            alert("Try Again")
+        }
+    }
+
 
     return(
         <>
             <h1>APILab2</h1>
+            <h3>{labIsCompleted}</h3>
             <h1>Broken Authentication</h1>
             <button id="showTask1ModalBtn" onClick={(event) => showTaskModal(event)}>Task 1</button><br />
             {!modal1hidden && (
@@ -185,12 +226,13 @@ const APILab2 = () => {
                             Go to Burp or OWASP ZAP and analyze the trajectory that you have made, check the request that you have sent in order to reset your password<br />
                             You will see that there is a request where you sent the OTP, the Email to change and the new password that you want<mark><b>REWRITE IT TO DISPLAY THE ACTUAL REQUEST THAT IS MADE</b></mark><br />
                             Let's assume that you know the Email address of another user, what if you could forge a Forgot Password Mail with a valid OTP to be created and sent to a victim and them to brute Force that value in order to change the victim's password to one of your choice?<br />
-                            Trigger the Forgot Password event again, this time enter the Email of Peter@test.com<br />
-                            On the Pop-up to change your password, enter the Email Peter@test.com, the password that you want and a random number then send the request<br />
+                            Trigger the Forgot Password event again, this time enter the Email of john@test.com<br />
+                            On the Pop-up to change your password, enter the Email john@test.com, the password that you want and a random number then send the request<br />
                             Grab that request on Burp and send it to the Intruder, Add the value of the OTP to the Attack and on the payloads tab, enter a list of Numbers from 0 to 10 and start the attack<br />
-                            If you receive a 200 OK response, try to log in to Peter's account using his Email and the password that you chose to solve the Lab<br />
+                            If you receive a 200 OK response, try to log in to John's account using his Email and the password that you chose to Log in as him<br />
                             On OWASP ZAP, Grab the request and send it to the Fuzzer, Add the value of the OTP to the attack and at the Payloads, enter a list of numbers from 0 to 10 and start the attack<br />
-                            If you receive a 200 OK response, try to log in to Peter's account using his Email and the password that you chose to solve the Lab<br />
+                            If you receive a 200 OK response, try to log in to John's account using his Email and the password that you chose to Log in as him<br />
+                            Submit the ammount of money that John has on his account in order to solve the lab<br/>
                            
                             
 
@@ -199,6 +241,8 @@ const APILab2 = () => {
                     </div>
                 </div>
             )}
+            <button id="showTask2ModalBtn" onClick={() => submitFlag()}>Submit Flag</button><br />
+           
 
 
             <button id="summary" onClick={(event) => showTaskModal(event)}>Summary</button><br />
@@ -208,7 +252,7 @@ const APILab2 = () => {
                         <div className="modal-content">
                             <p>
                                 When developing a "Forget Password" functionality, always certify that a limited number of attempts to send a reset password request must be implemented and that the OTP code sent is not easily brute forceable<br />
-                                
+                                Always be careful in a situation where you must develop your own "Forgot Password" system, if you don't absolutely must develop a system from 0, .NET Identity provide out of the box safe functionalities to do so<br/>
                             </p>
 
                             <button id="summary" onClick={(event) => hideModal(event)}>Hide</button>
@@ -219,12 +263,69 @@ const APILab2 = () => {
 
             <hr></hr>
 
-            <form onSubmit={handleSubmitLogIn }>
-                <input type="text" placeholder="Email" onChange={(event) => setEmail(event.target.value)} />
-                <input type="Password" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
-                <input type="submit" value="Log In"/>
-            </form>
-            <button id="showTask2ModalBtn" onClick={(event) => showTaskModal(event)}>Forgot Password?</button><br />
+            <>
+                {johnLoggedIn && (
+                    // Content for John logged in
+                    <div>
+                                        <div>John is logged in</div>
+                    <h1>Hello John!</h1>
+                        <h3>You have US$3467 on your account</h3>
+                        <button onClick={() => setJohnLoggedIn(false)}>Log Out</button>
+                    </div>
+
+                )}
+                {testLoggedIn && (
+                    // Content for Test logged in
+                    <div>
+                                        <div>Test is logged in</div>
+                                        <h1>Hello Test!</h1>
+                        <h3>You have US$5892 on your account</h3>
+                        <button onClick={() => setTestLoggedIn(false)}>Log Out</button>
+                    </div>
+
+                )}
+                {!johnLoggedIn && !testLoggedIn && (
+                    // Default content
+                    <div>
+                                        <form onSubmit={handleSubmitLogIn}>
+                        <input type="text" placeholder="Email" onChange={(event) => setEmail(event.target.value)} />
+                        <input type="Password" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
+                        <input type="submit" value="Log In" />
+                    </form>
+                    <button id="showTask2ModalBtn" onClick={(event) => showTaskModal(event)}>Forgot Password?</button><br />
+                    </div>
+
+                )}
+                
+                {!modal2hidden && (
+                    <div className="modal-backdrop">
+                        <div className="modal">
+                            <div className="modal-content">
+                                {showForgotPasswordForm ? (
+                                    // Content for Forgot Password form
+                                    <form onSubmit={handleSubmitForgotPassword}>
+                                        <input type="text" placeholder="Enter your Email" onChange={(event) => setEmail(event.target.value)} />
+                                        <input type="submit" value="Send code to your Email" />
+                                    </form>
+                                ) : (
+                                    // Content for Change Password form
+                                    <div>
+                                        <form onSubmit={handleSubmitChangePassword}>
+                                            <input type="text" placeholder="Enter your Email" />
+                                            <input type="text" placeholder="Enter your OTP" onChange={(event) => setOtp(event.target.value)} />
+                                            <input type="text" placeholder="Enter your New Password" onChange={(event) => setNewPassword(event.target.value)} />
+                                            <input type="submit" value="Change Password" />
+                                        </form>
+                                        <button onClick={() => setShowForgotPasswordForm(true)}>Back</button>
+                                    </div>
+                                )}
+                                
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </>
+            
             {!modal2hidden && (
                 <div className="modal-backdrop">
                     <div className="modal">
@@ -237,16 +338,20 @@ const APILab2 = () => {
                             )}
 
                             {!showForgotPasswordForm && (
-                                <form onSubmit={handleSubmitChangePassword}>
-                                    <input type="text" placeholder="Enter your Email" value={email} disabled />
+                                <div>
+                                                                <form onSubmit={handleSubmitChangePassword}>
+                                    <input type="text" placeholder="Enter your Email"  />
                                     <input type="text" placeholder="Enter your OTP" onChange={(event) => setOtp(event.target.value)} />
                                     <input type="text" placeholder="Enter your New Password" onChange={(event) => setNewPassword(event.target.value)} />
                                     <input type="submit" value="Change Password" />
-                                </form>
+                                    </form>
+                                    <button onClick={() => setShowForgotPasswordForm(true)}>Back</button>
+                                </div>
+
                             )}
+                            
 
-                            <button id="hideModal2Btn" onClick={(event) => { hideModal(event); setShowForgotPasswordForm(true); }}>Hide</button>
-
+                            <button id="hideModal2Btn" onClick={(event) => { hideModal(event);  }}>Hide</button>
                         </div>
                     </div>
                 </div>

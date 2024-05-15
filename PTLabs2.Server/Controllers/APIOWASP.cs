@@ -50,9 +50,16 @@ namespace PTLabs2.Server.Controllers
         {
             if(changePasswordDto.Email == "john@test.com")
             {
-                if(changePasswordDto.LastOTPSent ==changePasswordDto.OTP)
+                if(changePasswordDto.OTP =="7")
                 {
-                    return Ok("all right john");
+                    ChangePasswordDto response = new ChangePasswordDto()
+                    {
+                        Email = changePasswordDto.Email,
+                        OTP = changePasswordDto.OTP,
+                        NewPassword = changePasswordDto.NewPassword,
+                        IsSuccessful = true
+                    };
+                    return Ok(response);
                 }
                 else
                 {
@@ -64,7 +71,14 @@ namespace PTLabs2.Server.Controllers
             {
                 if(changePasswordDto.LastOTPSent == changePasswordDto.OTP)
                 {
-                    return Ok("all right test");
+                    ChangePasswordDto response = new ChangePasswordDto()
+                    {
+                        Email = changePasswordDto.Email,
+                        OTP = changePasswordDto.OTP,
+                        NewPassword = changePasswordDto.NewPassword,
+                        IsSuccessful = true
+                    };
+                    return Ok(response);
                 }
                 else
                 {
@@ -79,5 +93,11 @@ namespace PTLabs2.Server.Controllers
 
 
         }
+
+        //[HttpPost("LogInAPILab2")]
+        //public IActionResult LogInAPILab2([FromBody] APILab2LogInDto logInDto)
+        //{
+
+        //}
     }
 }
